@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EEE NOTES HUB | JUST</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+    
+    <script>
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.href = "login.html";
+        }
+    </script>
+
+    <style>
+        /* Smart Search Dropdown Style */
+        .search-wrapper { position: relative; }
+        #searchResultBox {
+            position: absolute; top: 50px; left: 0; width: 100%;
+            background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 2000; display: none; max-height: 350px; overflow-y: auto;
+            border: 1px solid #38bdf8;
+        }
+        .search-item {
+            padding: 12px 15px; border-bottom: 1px solid #f1f5f9; cursor: pointer; transition: 0.2s; text-align: left;
+        }
+        .search-item:hover { background: #f0f9ff; }
+        .search-item h4 { font-size: 13px; color: #0f172a; margin-bottom: 3px; }
+        .search-item span { font-size: 10px; color: white; background: #38bdf8; padding: 2px 6px; border-radius: 10px; font-weight: 700; text-transform: uppercase; }
+        .search-item p { font-size: 11px; color: #64748b; margin-top: 4px; }
+        
+        /* Navbar Adjustment */
+        .nav-links { list-style: none; display: flex; align-items: center; gap: 20px; }
+        .nav-links a { text-decoration: none; color: white; font-weight: 600; transition: 0.3s; display: flex; align-items: center; gap: 5px; cursor: pointer; }
+        .nav-links a:hover { color: #38bdf8; }
+        .logout-btn { color: #ff4b2b !important; } /* Logout button in red */
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo-search-group">
+            <a href="index.html" class="logo" style="text-decoration: none;">EEE <span>NOTES HUB</span></a>
+            
+            <div class="search-wrapper">
+                <div class="search-container">
+                    <input type="text" placeholder="Search notes, books..." id="searchBox" oninput="homeSmartSearch()" onkeyup="checkEnter(event)">
+                    <button type="button" onclick="executeSearch()">Search</button>
+                </div>
+                <div id="searchResultBox"></div>
+            </div>
+        </div>
+
+        <ul class="nav-links">
+            <li>
+                <a href="https://forms.gle/kPk9z3GHeUhP8YoV7" target="_blank">
+                    <i class="fas fa-exclamation-circle"></i> Report Issue
+                </a>
+            </li>
+            <li><a href="index.html" class="active">Home</a></li>
+            <li><a onclick="logoutUser()" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </nav>
+
+    <main class="main-wrapper">
+        <section class="left-hero">
+            <div class="hero-overlay">
+                <div class="hero-text">
+                    <h1>EEE NOTES HUB</h1>
+                    <p>Jashore University of Science and Technology</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="right-nav">
+            <div class="nav-container">
+                <a href="notes.html" class="nav-box">
+                    <i class="fas fa-book-open"></i>
+                    <h2>NOTES</h2>
+                </a>
+                <a href="books.html" class="nav-box">
+                    <i class="fas fa-book"></i>
+                    <h2>BOOKS LIBRARY</h2>
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const notesURL = "https://script.google.com/macros/s/AKfycbysHCrfrM922J5BqXwCPCjE74cCHCzpzObQ6ut7zxcwYHHMS4gb9ALS0b9DXwHvRbB91A/exec";
+        const booksURL = "https://script.google.com/macros/s/AKfycbwp0HGeFvKLyUnMXj_e31-rwkLCZYqvj3rvAICH8X6R5IPCVkxGV7QC1JkKsCoIYEak/exec";
+
+        let combinedData = [];
+
+        // Function to logout user
+        function logoutUser() {
+            localStorage.clear();
+            window.location.href = "login.html";
+        }
+
+        async function preLoadAllData() {
+            try {
+                const [notesRes, booksRes] = await Promise.all([fetch(notesURL), fetch(booksURL)]);
+                const notes = await notesRes.json();
+                const books = await booksRes.json();
+
+                const formattedNotes = notes.map(n => ({ title: n[3], link: n[4], info: n[0] + " > " + n[1], type: "note" }));
+                const formattedBooks = books.map(b => ({ title: b[0], link: b[2], info: "Author: " + b[1], type: "book" }));
+
+                combinedData = [...formattedNotes, ...formattedBooks];
+            } catch (e) { console.log("Data preload failed"); }
+        }
+
+        function homeSmartSearch() {
+            const q = document.getElementById('searchBox').value.toLowerCase();
+            const box = document.getElementById('searchResultBox');
+            if (q.length < 2) { box.style.display = 'none'; return; }
+
+            const matches = combinedData.filter(d => d.title.toLowerCase().includes(q));
+
+            if (matches.length > 0) {
+                box.style.display = 'block';
+                box.innerHTML = matches.map(d => `
+                    <div class="search-item" onclick="window.open('${d.link}','_blank')">
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <h4>${d.title}</h4>
+                            <span>${d.type}</span>
+                        </div>
+                        <p>${d.info}</p>
+                    </div>`).join('');
+            } else {
+                box.innerHTML = `<div style="padding:15px; font-size:12px; color:gray;">No matching files found...</div>`;
+                box.style.display = 'block';
+            }
+        }
+
+        function checkEnter(event) {
+            if (event.key === "Enter") { executeSearch(); }
+        }
+
+        function executeSearch() {
+            const query = document.getElementById('searchBox').value.trim();
+            if (query) {
+                const isBook = query.toLowerCase().includes("book") || query.toLowerCase().includes("author");
+                if (isBook) {
+                    window.location.href = `books.html?search=${encodeURIComponent(query)}`;
+                } else {
+                    window.location.href = `notes.html?search=${encodeURIComponent(query)}`;
+                }
+            }
+        }
+
+        window.onload = preLoadAllData;
+    </script>
+</body>
+</html>

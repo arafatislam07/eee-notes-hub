@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seminar Library | EEE NOTES HUB</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <script>
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.href = "login.html";
+        }
+    </script>
+
+    <style>
+        :root { 
+            --navbar-bg: #0f172a; 
+            --page-bg: #fdf5e6; 
+            --accent: #36bcf5; 
+            --dark-blue: #020617;
+        }
+        
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: var(--page-bg); color: #1e293b; }
+
+        .navbar {
+            height: 70px; background-color: var(--navbar-bg);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 5%; position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.3);
+        }
+
+        .logo-search-group { display: flex; align-items: center; gap: 40px; }
+        .logo { font-size: 24px; font-weight: 800; color: #ffffff; text-decoration: none; white-space: nowrap; }
+        .logo span { color: var(--accent); margin-left: 5px; }
+
+        .search-wrapper { position: relative; width: 350px; }
+        .search-container {
+            display: flex; align-items: center; background: #1e293b;
+            border-radius: 30px; padding: 2px 5px; height: 40px;
+            border: 2px solid var(--accent);
+        }
+        .search-container input {
+            background: transparent; border: none; outline: none;
+            color: white; padding: 0 15px; width: 100%; font-size: 14px;
+        }
+        
+        #searchResultBox {
+            position: absolute; top: 50px; left: 0; width: 100%;
+            background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 2000; display: none; max-height: 350px; overflow-y: auto;
+            border: 1px solid var(--accent);
+        }
+        .search-item { padding: 12px 15px; border-bottom: 1px solid #f1f5f9; cursor: pointer; transition: 0.2s; }
+        .search-item:hover { background: #f0f9ff; }
+        .search-item h4 { font-size: 13px; color: #0f172a; margin-bottom: 3px; }
+        .search-item p { font-size: 10px; color: #64748b; font-weight: 600; }
+
+        .nav-links { display: flex; align-items: center; gap: 25px; }
+        .nav-links a {
+            text-decoration: none; color: #ffffff !important; font-weight: 600;
+            font-size: 15px; display: flex; align-items: center; gap: 8px; transition: 0.3s;
+        }
+        .nav-links a:hover { color: var(--accent) !important; }
+
+        .container { padding: 40px 8%; max-width: 1100px; margin: auto; }
+        .page-header { margin-bottom: 30px; border-bottom: 2px solid #e5dcc3; padding-bottom: 15px; color: var(--dark-blue); }
+        
+        /* Admin Elements Hidden by Default */
+        .upload-section { display: none; background: white; border: 1px solid #e2e8f0; padding: 25px; border-radius: 10px; margin-bottom: 40px; }
+        .input-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 15px; margin-bottom: 15px; }
+        .input-grid input { padding: 12px; border: 1px solid #ddd; border-radius: 6px; outline: none; font-size: 13px; }
+        
+        .btn-upload { background: var(--dark-blue); color: white; border: none; padding: 12px; border-radius: 6px; cursor: pointer; font-weight: 600; width: 100%; transition: 0.3s; }
+        .btn-upload:hover { background: #000; }
+
+        .books-list { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+        .book-item { display: flex; justify-content: space-between; align-items: center; padding: 15px 20px; border-bottom: 1px solid #eee; }
+        
+        .action-btns { display: flex; gap: 10px; }
+        .btn-card { padding: 8px 15px; border-radius: 5px; text-decoration: none; font-size: 12px; font-weight: 700; cursor: pointer; border: none; }
+        .btn-view { background: #e0f2fe; color: #0369a1; }
+        
+        /* Delete Button Hidden by Default */
+        .btn-del { display: none; background: #fee2e2; color: #ef4444; }
+        
+        /* Show Admin Controls only for admin role */
+        .admin-view .upload-section { display: block !important; }
+        .admin-view .btn-del { display: block !important; }
+    </style>
+</head>
+<body class="loading-state">
+
+    <nav class="navbar">
+        <div class="logo-search-group">
+            <a href="index.html" class="logo">EEE <span>NOTES HUB</span></a>
+            <div class="search-wrapper">
+                <div class="search-container">
+                    <input type="text" id="searchBox" placeholder="Smart Search books..." oninput="smartSearch()">
+                </div>
+                <div id="searchResultBox"></div>
+            </div>
+        </div>
+
+        <div class="nav-links">
+            <a href="https://forms.gle/kPk9z3GHeUhP8YoV7" target="_blank">
+                <i class="fas fa-exclamation-circle"></i> Report Issue
+            </a>
+            <a href="javascript:void(0)" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</a>
+            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="page-header"><h1>Seminar Library</h1></div>
+
+        <div class="upload-section">
+            <div class="input-grid">
+                <input type="text" id="bName" placeholder="Book Title">
+                <input type="text" id="aName" placeholder="Author Name">
+                <input type="file" id="pdfFile" accept=".pdf">
+            </div>
+            <button onclick="upload()" id="upBtn" class="btn-upload">Save to Library</button>
+        </div>
+
+        <div class="books-list" id="display">
+            <p style="padding: 20px; text-align: center;">Loading resources...</p>
+        </div>
+    </div>
+
+    <script>
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwp0HGeFvKLyUnMXj_e31-rwkLCZYqvj3rvAICH8X6R5IPCVkxGV7QC1JkKsCoIYEak/exec';
+        let allBooks = [];
+        let historyStack = [];
+        const userRole = localStorage.getItem("userRole"); 
+
+        // Apply Admin View if user is admin
+        if (userRole === "admin") {
+            document.body.classList.add('admin-view');
+        }
+
+        async function load() {
+            try {
+                const res = await fetch(scriptURL);
+                allBooks = await res.json();
+                render(allBooks);
+            } catch (e) {
+                document.getElementById('display').innerHTML = "Error loading data!";
+            }
+        }
+
+        window.onpopstate = function(event) {
+            if (historyStack.length > 0) {
+                const lastAction = historyStack.pop();
+                lastAction();
+            } else {
+                window.location.href = "index.html";
+            }
+        };
+
+        function smartSearch() {
+            const q = document.getElementById('searchBox').value.toLowerCase();
+            const box = document.getElementById('searchResultBox');
+            if (q.length < 2) { box.style.display = 'none'; return; }
+
+            const matches = allBooks.filter(b => 
+                b[0].toString().toLowerCase().includes(q) || 
+                b[1].toString().toLowerCase().includes(q)
+            );
+
+            if (matches.length > 0) {
+                box.style.display = 'block';
+                box.innerHTML = matches.map(b => `
+                    <div class="search-item" onclick="window.open('${b[2]}','_blank')">
+                        <h4>${b[0]}</h4>
+                        <p>Author: ${b[1]}</p>
+                    </div>`).join('');
+            } else {
+                box.innerHTML = `<div style="padding:15px; font-size:12px;">No results found...</div>`;
+                box.style.display = 'block';
+            }
+        }
+
+        function render(data) {
+            const container = document.getElementById('display');
+            if(data.length === 0) {
+                container.innerHTML = "<p style='padding:20px; text-align:center;'>No books found.</p>";
+                return;
+            }
+            container.innerHTML = data.map((row) => {
+                const fileId = row[2].split('id=')[1] || row[2].split('/d/')[1].split('/')[0];
+                return `
+                <div class="book-item">
+                    <div>
+                        <h4 style="font-size:15px; color:#0f172a;">${row[0]}</h4>
+                        <p style="font-size:12px; color:gray;">Author: ${row[1]}</p>
+                    </div>
+                    <div class="action-btns">
+                        <a href="${row[2]}" target="_blank" class="btn-card btn-view">VIEW PDF</a>
+                        <button onclick="delFile('${fileId}')" class="btn-card btn-del">DELETE</button>
+                    </div>
+                </div>`;
+            }).join('');
+        }
+
+        function upload() {
+            if (userRole !== "admin") return;
+
+            const fileInput = document.getElementById('pdfFile');
+            const file = fileInput.files[0];
+            const bName = document.getElementById('bName').value;
+            const aName = document.getElementById('aName').value;
+            const btn = document.getElementById('upBtn');
+
+            if(!file || !bName || !aName) return alert("Please fill all fields!");
+
+            btn.innerText = "Saving to Library...";
+            btn.disabled = true;
+
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function(e) {
+                const params = new URLSearchParams({
+                    fileName: file.name,
+                    mimeType: file.type,
+                    fileContent: e.target.result.split(',')[1],
+                    bookName: bName,
+                    authorName: aName
+                });
+
+                fetch(scriptURL, { method: 'POST', body: params })
+                .then(() => { 
+                    alert("Success! Book saved to library."); 
+                    location.reload(); 
+                })
+                .catch(() => { 
+                    alert("Upload failed! Try again.");
+                    btn.innerText = "Save to Library";
+                    btn.disabled = false;
+                });
+            };
+        }
+
+        function delFile(id) {
+            if (userRole !== "admin") return;
+
+            if(confirm("Are you sure? This will delete the book from Drive and Sheet!")) {
+                const params = new URLSearchParams({
+                    action: "delete",
+                    fileId: id
+                });
+
+                fetch(scriptURL, { method: 'POST', body: params })
+                .then(res => res.text())
+                .then(data => {
+                    if (data === "Success") {
+                        alert("Book deleted successfully!");
+                        location.reload();
+                    } else {
+                        alert("Error: " + data);
+                    }
+                });
+            }
+        }
+
+        function goBack() { window.history.back(); }
+
+        window.onload = () => {
+            window.history.replaceState(null, ""); 
+            load();
+        };
+    </script>
+</body>
+</html>

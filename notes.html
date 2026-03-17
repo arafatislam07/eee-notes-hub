@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notes Hub | EEE NOTES HUB</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <script>
+        if (localStorage.getItem("isLoggedIn") !== "true") {
+            window.location.href = "login.html";
+        }
+    </script>
+
+    <style>
+        :root { --nav-bg: #0f172a; --accent: #38bdf8; --bg: #fdf5e6; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
+        body { background-color: var(--bg); color: #1e293b; min-height: 100vh; overflow-x: hidden; }
+
+        .navbar {
+            height: 70px; background-color: var(--nav-bg);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 5%; position: sticky; top: 0; z-index: 1000;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.3);
+        }
+        .logo-group { display: flex; align-items: center; gap: 30px; }
+        .logo { font-size: 24px; font-weight: 800; color: white; text-decoration: none; }
+        .logo span { color: var(--accent); margin-left: 5px; }
+
+        .search-wrapper { position: relative; width: 400px; }
+        .search-container {
+            display: flex; align-items: center; background: #1e293b;
+            border: 2px solid var(--accent); border-radius: 30px;
+            padding: 2px 5px; width: 100%; height: 42px;
+        }
+        .search-container input {
+            background: transparent; border: none; outline: none;
+            color: white; padding: 0 15px; width: 100%; font-size: 14px;
+        }
+        #searchResultBox {
+            position: absolute; top: 50px; left: 0; width: 100%;
+            background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            z-index: 2000; display: none; max-height: 350px; overflow-y: auto; border: 1px solid var(--accent);
+        }
+        .search-item { padding: 12px 15px; border-bottom: 1px solid #f1f5f9; cursor: pointer; transition: 0.2s; text-align: left; }
+        .search-item:hover { background: #f0f9ff; }
+        .search-item h4 { font-size: 13px; color: #0f172a; margin-bottom: 3px; }
+        .search-item p { font-size: 10px; color: #64748b; font-weight: 600; }
+
+        .nav-links { display: flex; align-items: center; gap: 20px; }
+        .btn-back { background: transparent; border: none; color: white; font-weight: 600; font-size: 15px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
+        .nav-links a { text-decoration: none; color: white; font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 8px; }
+
+        .container { padding: 40px 8%; max-width: 1200px; margin: auto; }
+        .breadcrumb { margin-bottom: 20px; padding: 12px 20px; background: white; border-radius: 8px; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-weight: 600; color: #64748b; }
+
+        .grid-view { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+        .card { background: white; padding: 25px; border-radius: 12px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); cursor: pointer; transition: 0.3s; border: 1px solid #e2e8f0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+        .card i { font-size: 2.5rem; color: var(--accent); margin-bottom: 15px; }
+        .card h3 { font-size: 13px; color: #0f172a; font-weight: 700; line-height: 1.4; }
+
+        #uploadSection { background: #fff; padding: 20px; border-radius: 10px; margin-bottom: 30px; border: 2px dashed var(--accent); display: none; }
+        .btn-view { background: #e0f2fe; color: #0369a1; padding: 8px 15px; border-radius: 5px; text-decoration: none; font-size: 12px; font-weight: 700; display: block; margin-top: 10px; text-align: center; width: 100%; }
+        .btn-del { display: none; background: #fee2e2; color: #ef4444; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 11px; font-weight: 700; margin-top: 8px; width: 100%; }
+        
+        .admin-view .btn-del { display: block !important; }
+        
+        .loading { grid-column: 1/-1; text-align: center; padding: 50px; color: var(--accent); font-weight: 600; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo-group">
+            <a href="index.html" class="logo">EEE <span>NOTES HUB</span></a>
+            <div class="search-wrapper">
+                <div class="search-container">
+                    <input type="text" id="searchBox" placeholder="Smart Search notes..." oninput="smartSearch()">
+                </div>
+                <div id="searchResultBox"></div>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="https://forms.gle/kPk9z3GHeUhP8YoV7" target="_blank">
+                <i class="fas fa-exclamation-circle"></i> Report Issue
+            </a>
+            <button class="btn-back" onclick="goBack()"><i class="fas fa-arrow-left"></i> Back</button>
+            <a href="index.html"><i class="fas fa-home"></i> Home</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div id="breadcrumb" class="breadcrumb">Notes Library</div>
+        
+        <div id="uploadSection">
+            <h4 id="upTitle" style="font-size:13px; margin-bottom:12px; color:#0f172a; font-weight:700;"></h4>
+            <div style="display:flex; flex-wrap:wrap; gap:10px;">
+                <input type="text" id="fileDisplayName" placeholder="Ex: Lecture 01" style="padding:10px; flex:2; border:1px solid #ddd; border-radius:5px; outline:none;">
+                <input type="file" id="fileInput" style="padding:5px; flex:1;">
+                <button onclick="uploadFile()" id="upBtn" style="padding:10px 25px; background:var(--nav-bg); color:white; border:none; border-radius:5px; cursor:pointer; font-weight:700;">UPLOAD</button>
+            </div>
+        </div>
+
+        <div class="grid-view" id="mainContent"></div>
+    </div>
+
+    <script>
+        const syllabus = {
+            "1st Year - 1st Semester": ["EEE 1101: Electrical Circuits-I (3.0)", "EEE 1102: Electrical Circuits-I Sessional (1.5)", "CSE 1102: Computer Aided Applications Sessional (0.75)", "PHY 1101: Physics (3.0)", "PHY 1102: Physics Sessional (1.5)", "CHEM 1101: Chemistry (3.0)", "CHEM 1102: Chemistry Sessional (0.75)", "MATH 1101: Differential and Integral Calculus (3.0)", "HUM 1101: Bangladesh Studies and Professional Ethics (3.0)"],
+            "1st Year - 2nd Semester": ["EEE 1201: Electrical Circuits-II (3.0)", "EEE 1202: Electrical Circuits-II Sessional (1.5)", "CSE 1201: Computer Programming (3.0)", "CSE 1202: Computer Programming Sessional (1.5)", "CE 1202: Engineering Drawing with CAD (0.75)", "MATH 1201: Co-ordinate Geometry and Linear Algebra (3.0)", "HUM 1201: Economics and Sociology (3.0)", "ENG 1201: Communicative English (3.0)", "ENG 1202: Developing English Skills Sessional (1.5)"],
+            "2nd Year - 1st Semester": ["EEE 2101: Electronics-I (3.0)", "EEE 2102: Electronics-I Sessional (1.5)", "EEE 2103: Electrical Machines-I (3.0)", "EEE 2104: Electrical Machines-I Sessional (1.5)", "ME 2101: Basic Mechanical Engineering (3.0)", "ME 2102: Basic Mechanical Engineering Sessional (0.75)", "MATH 2101: Ordinary and Partial Differential Equations (3.0)", "MATH 2103: Numerical Analysis (2.0)", "MATH 2104: Numerical Analysis Sessional (0.75)", "HUM 2101: Financial and Managerial Accounting (3.0)"],
+            "2nd Year - 2nd Semester": ["EEE 2201: Electrical Machines-II (3.0)", "EEE 2202: Electrical Machines-II Sessional (1.5)", "EEE 2203: Electronics-II (3.0)", "EEE 2204: Electronics-II Sessional (1.5)", "EEE 2206: Electrical and Electronic Circuit Simulation Sessional (0.75)", "EEE 2208: Electrical Machine Design (0.75)", "MATH 2201: Complex Variable and Vector Analysis (3.0)", "MATH 2203: Probability and Statistics (3.0)", "HUM 2201: Industrial Management (3.0)"],
+            "3rd Year - 1st Semester": ["EEE 3101: Digital Electronics and Logic Design (3.0)", "EEE 3102: Digital Electronics and Logic Design Sessional (1.5)", "EEE 3103: Measurement and Instrumentation (3.0)", "EEE 3104: Measurement and Instrumentation Sessional (0.75)", "EEE 3105: Electromagnetic Fields and Waves (3.0)", "EEE 3107: Renewable Energy and Sustainability (3.0)", "EEE 3110: Electrical Shop Practice and Service Design (1.5)", "CSE 3102: Applied Programming Sessional (0.75)", "PHY 3101: Electrical Engineering Materials (3.0)"],
+            "3rd Year - 2nd Semester": ["EEE 3200: Project Design and Seminar (1.5)", "EEE 3201: Signals and Systems (3.0)", "EEE 3203: Power Transmission and Distribution (3.0)", "EEE 3205: Communication Engineering-I (3.0)", "EEE 3206: Communication Engineering-I Sessional (0.75)", "EEE 3207: Control System (3.0)", "EEE 3208: Control System Sessional (0.75)", "EEE 3209: Microprocessor and Embedded System (3.0)", "EEE 3210: Microprocessor and Embedded System Sessional (1.5)"],
+            "4th Year - 1st Semester": {
+                "Core Subjects": ["EEE 4000: Project/Thesis (1.5)", "EEE 4101: Power System Analysis (3.0)", "EEE 4102: Power System Analysis Sessional (0.75)", "EEE 4103: Power Electronics (3.0)", "EEE 4104: Power Electronics Sessional (1.5)", "EEE 4105: Communication Engineering-II (3.0)", "EEE 4108: Industrial Attachment/Field Works (0.75)", "EEE 4110: Research Methodology Sessional (0.75)"],
+                "1. Interdisciplinary": ["BME 4121: Fundamentals of Biomedical Engineering (3.0)", "EEE 4123: Artificial Intelligence and Machine Learning (3.0)", "EEE 4125: Data Analytics and Big Data (3.0)", "EEE 4127: Optimization Techniques (3.0)", "EEE 4128: Optimization Techniques Sessional (0.75)"],
+                "2. Power and Energy Systems": ["EEE 4141: Energy Management and Efficiency (3.0)", "EEE 4143: Energy Storage Systems (3.0)", "EEE 4145: Nuclear Engineering (3.0)"],
+                "3. Electronics and Integrated Circuits": ["EEE 4161: Optoelectronics (3.0)", "EEE 4163: Processing and Fabrication Technology (3.0)", "EEE 4165: Analog Integrated Circuits (3.0)"],
+                "4. Communication and Signal Processing": ["EEE 4181: Telecommunication Engineering (3.0)", "EEE 4183: Microwave and Antenna Engineering (3.0)", "EEE 4184: Microwave and Antenna Engineering Sessional (0.75)", "EEE 4185: Digital Signal Processing (3.0)", "EEE 4186: Digital Signal Processing Sessional (0.75)"]
+            },
+            "4th Year - 2nd Semester": {
+                "Core Subjects": ["EEE 4000: Project/Thesis (3.0)", "EEE 4201: Power Plant Engineering (3.0)", "EEE 4203: Switchgear and Protection (3.0)", "EEE 4204: Switchgear and Protection Sessional (0.75)"],
+                "1. Interdisciplinary": ["EEE 4221: Robotics and Automation (3.0)", "BME 4221: Biomedical Signal Measurement and Processing (3.0)", "BME 4222: Biomedical Signal Measurement and Processing Sessional (0.75)", "EEE 4223: Computer Networks (3.0)", "EEE 4224: Computer Networks Sessional (0.75)"],
+                "2. Power and Energy Systems": ["EEE 4241: Power System Operation and Control (3.0)", "EEE 4243: Power System Reliability (3.0)", "EEE 4245: Smart Grid (3.0)", "EEE 4247: Energy Policy and Economics (3.0)", "EEE 4249: High Voltage Engineering (3.0)", "EEE 4250: High Voltage Engineering Sessional (0.75)"],
+                "3. Electronics and Integrated Circuits": ["EEE 4261: Compound Semiconductor and Heterojunction Devices (3.0)", "EEE 4263: Photonics Engineering (3.0)", "EEE 4265: Semiconductor Device Theory (3.0)", "EEE 4267: Plasma Engineering (3.0)", "EEE 4269: VLSI Design and Technology (3.0)", "EEE 4270: VLSI Design and Technology Sessional (0.75)"],
+                "4. Communication and Signal Processing": ["EEE 4281: Optical Fiber Communication (3.0)", "Mobile Cellular Communication (3.0)", "EEE 4285: Radar and Satellite Communication (3.0)", "EEE 4287: Digital Image Processing (3.0)", "EEE 4288: Digital Image Processing Sessional (0.75)"]
+            }
+        };
+
+        const notesScriptURL = "https://script.google.com/macros/s/AKfycbysHCrfrM922J5BqXwCPCjE74cCHCzpzObQ6ut7zxcwYHHMS4gb9ALS0b9DXwHvRbB91A/exec";
+        let historyStack = [];
+        let currentPath = { sem: "", group: "", sub: "", cat: "" };
+        let allNotesCache = [];
+        const userRole = localStorage.getItem("userRole");
+
+        window.onpopstate = function(event) {
+            if (historyStack.length > 0) {
+                const lastAction = historyStack.pop();
+                lastAction();
+            } else {
+                window.location.href = "index.html";
+            }
+        };
+
+        async function preLoadData() {
+            try { const r = await fetch(notesScriptURL); allNotesCache = await r.json(); } catch(e){}
+        }
+
+        function smartSearch() {
+            const q = document.getElementById('searchBox').value.toLowerCase();
+            const box = document.getElementById('searchResultBox');
+            if (q.length < 2) { box.style.display = 'none'; return; }
+            const matches = allNotesCache.filter(f => f[3].toLowerCase().includes(q));
+            if (matches.length > 0) {
+                box.style.display = 'block';
+                box.innerHTML = matches.map(f => `<div class="search-item" onclick="window.open('${f[4]}','_blank')"><h4>${f[3]}</h4><p>${f[0]} > ${f[1]}</p></div>`).join('');
+            } else {
+                box.innerHTML = `<div style="padding:15px; font-size:12px;">No results found...</div>`;
+                box.style.display = 'block';
+            }
+        }
+
+        function render(html, b, showUpload = false) {
+            document.getElementById('mainContent').innerHTML = html;
+            document.getElementById('breadcrumb').innerText = b;
+            document.getElementById('searchResultBox').style.display = 'none';
+            
+            const upSection = document.getElementById('uploadSection');
+            if (userRole === "admin" && showUpload) {
+                upSection.style.display = 'block';
+                document.body.classList.add('admin-view');
+            } else {
+                upSection.style.display = 'none';
+                document.body.classList.remove('admin-view');
+            }
+        }
+
+        function showSemesters() {
+            historyStack = [];
+            const html = Object.keys(syllabus).map(sem => `
+                <div class="card" onclick="openSemester('${sem}')"><i class="fas fa-university"></i><h3>${sem}</h3></div>`).join('');
+            render(html, "Notes Library", false);
+        }
+
+        function openSemester(sem) {
+            window.history.pushState({step: "sem"}, ""); 
+            historyStack.push(() => showSemesters());
+            currentPath.sem = sem; currentPath.group = "";
+            const data = syllabus[sem];
+            const html = Array.isArray(data) 
+                ? data.map(sub => `<div class="card" onclick="openCategories('${sub}')"><i class="fas fa-book-open"></i><h3>${sub}</h3></div>`).join('')
+                : Object.keys(data).map(group => `<div class="card" onclick="openGroup('${sem}', '${group}')"><i class="fas fa-folder"></i><h3>${group}</h3></div>`).join('');
+            render(html, sem, false);
+        }
+
+        function openGroup(sem, group) {
+            window.history.pushState({step: "group"}, "");
+            historyStack.push(() => openSemester(sem));
+            currentPath.group = group;
+            const html = syllabus[sem][group].map(sub => `<div class="card" onclick="openCategories('${sub}')"><i class="fas fa-book-open"></i><h3>${sub}</h3></div>`).join('');
+            render(html, group, false);
+        }
+
+        function openCategories(sub) {
+            window.history.pushState({step: "cat"}, "");
+            historyStack.push(() => currentPath.group ? openGroup(currentPath.sem, currentPath.group) : openSemester(currentPath.sem));
+            currentPath.sub = sub;
+            const html = ["CLASS NOTE", "PREVIOUS QUESTION", "LAB REPORT"].map(cat => `
+                <div class="card" onclick="loadFiles('${cat}')"><i class="fas fa-file-pdf"></i><h3>${cat}</h3></div>`).join('');
+            render(html, sub, false);
+        }
+
+        async function loadFiles(cat) {
+            window.history.pushState({step: "files"}, "");
+            currentPath.cat = cat;
+            historyStack.push(() => openCategories(currentPath.sub));
+            document.getElementById('upTitle').innerText = `Adding to: ${currentPath.sub} > ${cat}`;
+            const container = document.getElementById('mainContent');
+            container.innerHTML = `<div class="loading"><i class="fas fa-spinner fa-spin"></i> Fetching Files...</div>`;
+            render(container.innerHTML, currentPath.sub + " > " + cat, true); 
+            
+            try {
+                const res = await fetch(notesScriptURL);
+                const data = await res.json();
+                const filtered = data.filter(r => r[0] === currentPath.sem && r[1] === currentPath.sub && r[2] === cat);
+                if (filtered.length === 0) {
+                    document.getElementById('mainContent').innerHTML = `<p style="grid-column: 1/-1; text-align:center; padding:20px;">No documents found yet.</p>`;
+                } else {
+                    document.getElementById('mainContent').innerHTML = filtered.map(r => {
+                        const fileId = r[4].split('id=')[1] || r[4].split('/d/')[1].split('/')[0];
+                        return `<div class="card" style="height:auto; padding:20px;"><h3 style="font-size:13px; margin-bottom:10px;">${r[3]}</h3><a href="${r[4]}" target="_blank" class="btn-view">VIEW / DOWNLOAD</a><button class="btn-del" onclick="deleteFile('${fileId}')">DELETE</button></div>`;
+                    }).join('');
+                }
+            } catch (e) { document.getElementById('mainContent').innerHTML = "Error loading files."; }
+        }
+
+        function deleteFile(id) {
+            if (userRole !== "admin") return;
+            if (!confirm("Are you sure you want to delete this file?")) return;
+            
+            const params = new URLSearchParams({ action: "delete", fileId: id });
+            fetch(notesScriptURL, { method: 'POST', body: params }).then(r => r.text()).then(d => {
+                if (d === "Success") { alert("Deleted Successfully!"); location.reload(); }
+                else alert("Error: " + d);
+            });
+        }
+
+        function uploadFile() {
+            if (userRole !== "admin") {
+                alert("Unauthorized Access!");
+                return;
+            }
+            const file = document.getElementById('fileInput').files[0];
+            const name = document.getElementById('fileDisplayName').value;
+            if (!file || !name) return alert("Fill all fields!");
+            
+            const btn = document.getElementById('upBtn');
+            btn.innerText = "UPLOADING..."; btn.disabled = true;
+            
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = function(e) {
+                const params = new URLSearchParams({ 
+                    fileName: name, 
+                    mimeType: file.type, 
+                    fileContent: e.target.result.split(',')[1], 
+                    semester: currentPath.sem, 
+                    subject: currentPath.sub, 
+                    category: currentPath.cat 
+                });
+                fetch(notesScriptURL, { method: 'POST', body: params }).then(() => { 
+                    alert("Upload Success!"); 
+                    location.reload(); 
+                });
+            };
+        }
+
+        function goBack() { window.history.back(); }
+        window.onload = () => { 
+            window.history.replaceState(null, ""); 
+            showSemesters(); 
+            preLoadData(); 
+        };
+    </script>
+</body>
+</html>

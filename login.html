@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | EEE NOTES HUB</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <script src="https://accounts.google.com/gsi/client?hl=en" async defer></script>
+    
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --accent-color: #38bdf8;
+            --text-main: #ffffff;
+            --text-dim: #94a3b8;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--bg-color);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-main);
+        }
+
+        .login-card {
+            background-color: var(--card-bg);
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid var(--accent-color);
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .login-card h1 {
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .login-card p {
+            font-size: 14px;
+            color: var(--text-dim);
+            margin-bottom: 30px;
+        }
+
+        .footer-text {
+            margin-top: 20px;
+            font-size: 11px;
+            color: var(--text-dim);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <h1>EEE NOTES HUB</h1>
+        <p>Log in with your Google account to access the Resource Hub.</p>
+        
+        <div id="g_id_onload"
+             data-client_id="YOUR_GOOGLE_CLIENT_ID"
+             data-callback="handleLogin"
+             data-auto_prompt="false">
+        </div>
+
+        <div class="g_id_signin" 
+             data-type="standard" 
+             data-shape="pill" 
+             data-theme="filled_blue" 
+             data-text="signin_with" 
+             data-size="large"
+             data-logo_alignment="left">
+        </div>
+
+        <p class="footer-text">Secure Access for JUST EEE Students</p>
+    </div>
+
+    <script>
+        function handleLogin(response) {
+            const payload = decodeJwtResponse(response.credential);
+            const userEmail = payload.email;
+
+            // ==========================================
+            // ADMIN CONFIGURATION SECTION
+            // ==========================================
+            const adminList = [
+                "arafatislam231119@gmail.com", 
+                "friend1@gmail.com",           
+                "friend2@gmail.com"            
+            ];
+            // ==========================================
+
+            localStorage.setItem("userEmail", userEmail);
+            localStorage.setItem("userName", payload.name);
+            localStorage.setItem("isLoggedIn", "true");
+
+            if (adminList.includes(userEmail)) {
+                localStorage.setItem("userRole", "admin");
+            } else {
+                localStorage.setItem("userRole", "user");
+            }
+
+            window.location.href = "index.html";
+        }
+
+        function decodeJwtResponse(token) {
+            let base64Url = token.split('.')[1];
+            let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+            let jsonPayload = decodeURIComponent(atob(base64).split('').map(function(c) {
+                return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join(''));
+
+            return JSON.parse(jsonPayload);
+        }
+
+        window.onload = function() {
+            if (localStorage.getItem("isLoggedIn") === "true") {
+                window.location.href = "index.html";
+            }
+        };
+    </script>
+</body>
+</html>
