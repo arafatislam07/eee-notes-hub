@@ -38,6 +38,9 @@
             border: 1px solid var(--accent-color);
             max-width: 400px;
             width: 90%;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* বাটন সেন্টারে রাখার জন্য */
         }
 
         .login-card h1 {
@@ -58,6 +61,13 @@
             font-size: 11px;
             color: var(--text-dim);
         }
+        
+        /* গুগল বাটন কন্টেইনার ফিক্স */
+        .g_id_signin {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
@@ -69,15 +79,17 @@
         <div id="g_id_onload"
              data-client_id="690467727971-rbfqm60vm5p838o1qia17qqnmdda76ef.apps.googleusercontent.com"
              data-callback="handleLogin"
-             data-auto_prompt="false">
+             data-auto_prompt="false"
+             data-auto_select="false">
         </div>
 
         <div class="g_id_signin" 
              data-type="standard" 
-             data-shape="pill" 
+             data-shape="rectangular" 
              data-theme="filled_blue" 
              data-text="signin_with" 
              data-size="large"
+             data-width="320" 
              data-logo_alignment="left">
         </div>
 
@@ -89,15 +101,11 @@
             const payload = decodeJwtResponse(response.credential);
             const userEmail = payload.email;
 
-            // ==========================================
-            // ADMIN CONFIGURATION SECTION
-            // ==========================================
             const adminList = [
                 "arafatislam231119@gmail.com", 
                 "friend1@gmail.com",           
                 "friend2@gmail.com"            
             ];
-            // ==========================================
 
             localStorage.setItem("userEmail", userEmail);
             localStorage.setItem("userName", payload.name);
