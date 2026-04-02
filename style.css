@@ -308,10 +308,10 @@ body {
         border-top: 1px solid #1e293b;
     }
 
-    /* Hero Banner: Final Fix for Image above text */
+    /* Hero Banner: Final Fix */
     .left-hero {
         width: 100% !important;
-        height: 500px;
+        height: 550px; /* হাইট একটু বাড়িয়েছি যেন গ্যাপ সুন্দর লাগে */
         border-right: none;
         border-bottom: 2px solid #e0f2fe;
         background-color: #fefce8 !important;
@@ -319,8 +319,8 @@ body {
         background-size: contain; 
         background-repeat: no-repeat;
         
-        /* ✅ পজিশন মাঝখানে করা হয়েছে যেন কার্টুন উপরে থাকে */
-        background-position: center 40px; 
+        /* ✅ কার্টুন একদম নিচে থাকবে */
+        background-position: center bottom 20px; 
         
         display: flex;
         flex-direction: column;
@@ -332,8 +332,8 @@ body {
         background: none;
         align-items: flex-start; 
         
-        /* ✅ কার্টুন থেকে লেখাকে নিচে নামানোর জন্য প্যাডিং বাড়ানো হয়েছে */
-        padding-top: 260px; 
+        /* ✅ প্যাডিং কমিয়ে ৪০ করেছি যাতে লেখা ওপরে ফাঁকা জায়গায় চলে যায় */
+        padding-top: 40px !important; 
     }
 
     .hero-text {
@@ -351,7 +351,7 @@ body {
     }
 
     .hero-text p {
-        font-size: 0.95rem;
+        font-size: 1rem;
         font-weight: 700;
         color: #000;
     }
