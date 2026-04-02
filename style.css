@@ -42,7 +42,7 @@ body {
 
 .logo span { color: #38bdf8; margin-left: 5px; }
 
-/* Search Container: প্রফেশনাল বড় সাইজ */
+/* Search Container: Professional Large Size */
 .search-container {
     display: flex;
     align-items: center;
@@ -87,7 +87,7 @@ body {
     color: #0f172a;
 }
 
-/* --- Smart Search Result Dropdown (New Additions) --- */
+/* Smart Search Result Dropdown Box */
 #searchResultBox {
     position: absolute;
     top: 50px;
@@ -134,6 +134,7 @@ body {
     font-weight: 700;
 }
 
+/* Navigation Links */
 .nav-links {
     display: flex;
     list-style: none;
@@ -152,14 +153,14 @@ body {
 
 .nav-links a:hover { color: #38bdf8 !important; }
 
-/* Main Layout */
+/* Main Layout Wrapper Styling */
 .main-wrapper {
     display: flex;
     height: 100vh;
     padding-top: 70px;
 }
 
-/* Left Hero Section */
+/* Left Hero Section Background and Border */
 .left-hero {
     flex: 2;
     background-image: url('./images/hero-bg.jpg'); 
@@ -201,7 +202,7 @@ body {
     font-weight: 600;
 }
 
-/* Right Section Cards */
+/* Right Side Navigation Cards Section */
 .right-nav {
     flex: 1;
     background-color: #020617;
@@ -249,41 +250,74 @@ body {
     font-weight: 700;
 }
 
-/* --- Mobile Responsiveness (Responsive Fix) --- */
+/* --- Mobile Responsiveness (Screen size below 900px) --- */
 @media (max-width: 900px) {
     .main-wrapper {
         flex-direction: column;
         height: auto;
     }
 
+    /* Adjust navbar to stack elements vertically on mobile */
     .navbar {
         flex-direction: column;
         height: auto;
         padding: 15px;
         position: relative;
+        display: flex;
     }
 
+    /* Stack logo-search-group vertically */
     .logo-search-group {
         flex-direction: column;
         width: 100%;
         gap: 15px;
+        display: flex;
+    }
+
+    /* Order 1: Logo stays at the top */
+    .logo {
+        order: 1;
+        text-align: center;
+        width: 100%;
+    }
+
+    /* Order 2: Search bar appears in the middle */
+    .search-wrapper {
+        order: 2;
+        width: 100%;
     }
 
     .search-container {
         width: 100%;
     }
 
+    /* Order 3: Navigation links at the bottom */
+    .nav-links {
+        order: 3;
+        width: 100%;
+        justify-content: center;
+        margin-top: 15px;
+        padding-top: 10px;
+        border-top: 1px solid #1e293b;
+    }
+
+    .nav-links li {
+        margin: 0 10px;
+    }
+
+    /* Adjust Hero Text for mobile to avoid cropping */
     .hero-text {
-        padding-left: 5%;
+        padding-left: 0;
         transform: translateY(0);
         text-align: center;
         white-space: normal;
+        width: 100%;
     }
 
     .hero-text h1 { font-size: 2.2rem; }
 
     .left-hero {
-        height: 300px;
+        height: 350px;
         border-right: none;
         border-bottom: 2px solid #e0f2fe;
     }
@@ -296,7 +330,7 @@ body {
     .nav-box { min-height: 150px; }
 }
 
-/* Scrollbar Style */
+/* Custom Webkit Scrollbar for Search Box */
 #searchResultBox::-webkit-scrollbar { width: 6px; }
 #searchResultBox::-webkit-scrollbar-thumb {
     background: #38bdf8;

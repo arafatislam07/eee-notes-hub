@@ -18,6 +18,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
         body { background-color: var(--bg); color: #1e293b; min-height: 100vh; overflow-x: hidden; }
 
+        /* Navigation Bar Styling */
         .navbar {
             height: 70px; background-color: var(--nav-bg);
             display: flex; justify-content: space-between; align-items: center;
@@ -28,6 +29,7 @@
         .logo { font-size: 24px; font-weight: 800; color: white; text-decoration: none; }
         .logo span { color: var(--accent); margin-left: 5px; }
 
+        /* Search Bar Components */
         .search-wrapper { position: relative; width: 400px; }
         .search-container {
             display: flex; align-items: center; background: #1e293b;
@@ -38,6 +40,8 @@
             background: transparent; border: none; outline: none;
             color: white; padding: 0 15px; width: 100%; font-size: 14px;
         }
+
+        /* Search Results Suggestion Box */
         #searchResultBox {
             position: absolute; top: 50px; left: 0; width: 100%;
             background: white; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2);
@@ -48,26 +52,40 @@
         .search-item h4 { font-size: 13px; color: #0f172a; margin-bottom: 3px; }
         .search-item p { font-size: 10px; color: #64748b; font-weight: 600; }
 
+        /* Navbar Menu Items */
         .nav-links { display: flex; align-items: center; gap: 20px; }
         .btn-back { background: transparent; border: none; color: white; font-weight: 600; font-size: 15px; cursor: pointer; display: flex; align-items: center; gap: 8px; }
         .nav-links a { text-decoration: none; color: white; font-weight: 600; font-size: 15px; display: flex; align-items: center; gap: 8px; }
 
+        /* Main Content Layout */
         .container { padding: 40px 8%; max-width: 1200px; margin: auto; }
         .breadcrumb { margin-bottom: 20px; padding: 12px 20px; background: white; border-radius: 8px; font-size: 14px; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-weight: 600; color: #64748b; }
 
+        /* Grid and Card UI Design */
         .grid-view { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
         .card { background: white; padding: 25px; border-radius: 12px; text-align: center; box-shadow: 0 4px 6px rgba(0,0,0,0.05); cursor: pointer; transition: 0.3s; border: 1px solid #e2e8f0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
         .card:hover { transform: translateY(-5px); border-color: var(--accent); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
         .card i { font-size: 2.5rem; color: var(--accent); margin-bottom: 15px; }
         .card h3 { font-size: 13px; color: #0f172a; font-weight: 700; line-height: 1.4; }
 
+        /* Admin Management Section Styling */
         #uploadSection { background: #fff; padding: 20px; border-radius: 10px; margin-bottom: 30px; border: 2px dashed var(--accent); display: none; }
         .btn-view { background: #e0f2fe; color: #0369a1; padding: 8px 15px; border-radius: 5px; text-decoration: none; font-size: 12px; font-weight: 700; display: block; margin-top: 10px; text-align: center; width: 100%; }
         .btn-del { display: none; background: #fee2e2; color: #ef4444; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; font-size: 11px; font-weight: 700; margin-top: 8px; width: 100%; }
         
+        /* Activate delete functionality for Admin Role */
         .admin-view .btn-del { display: block !important; }
         
+        /* Visual feedback for loading data */
         .loading { grid-column: 1/-1; text-align: center; padding: 50px; color: var(--accent); font-weight: 600; }
+
+        /* --- Mobile Responsive Navbar Configuration --- */
+        @media (max-width: 900px) {
+            .navbar { height: auto; flex-direction: column; padding: 15px; gap: 15px; position: relative; }
+            .logo-group { flex-direction: column; width: 100%; gap: 10px; }
+            .search-wrapper { width: 100%; }
+            .nav-links { width: 100%; justify-content: center; border-top: 1px solid #1e293b; padding-top: 10px; }
+        }
     </style>
 </head>
 <body>
@@ -77,7 +95,7 @@
             <a href="index.html" class="logo">EEE <span>NOTES HUB</span></a>
             <div class="search-wrapper">
                 <div class="search-container">
-                    <input type="text" id="searchBox" placeholder="Smart Search notes..." oninput="smartSearch()">
+                    <input type="text" id="searchBox" placeholder="Smart Search notes/books..." oninput="smartSearch()">
                 </div>
                 <div id="searchResultBox"></div>
             </div>
@@ -107,6 +125,7 @@
     </div>
 
     <script>
+        // Comprehensive Database for EEE Syllabus Mapping
         const syllabus = {
             "1st Year - 1st Semester": ["EEE 1101: Electrical Circuits-I (3.0)", "EEE 1102: Electrical Circuits-I Sessional (1.5)", "CSE 1102: Computer Aided Applications Sessional (0.75)", "PHY 1101: Physics (3.0)", "PHY 1102: Physics Sessional (1.5)", "CHEM 1101: Chemistry (3.0)", "CHEM 1102: Chemistry Sessional (0.75)", "MATH 1101: Differential and Integral Calculus (3.0)", "HUM 1101: Bangladesh Studies and Professional Ethics (3.0)"],
             "1st Year - 2nd Semester": ["EEE 1201: Electrical Circuits-II (3.0)", "EEE 1202: Electrical Circuits-II Sessional (1.5)", "CSE 1201: Computer Programming (3.0)", "CSE 1202: Computer Programming Sessional (1.5)", "CE 1202: Engineering Drawing with CAD (0.75)", "MATH 1201: Co-ordinate Geometry and Linear Algebra (3.0)", "HUM 1201: Economics and Sociology (3.0)", "ENG 1201: Communicative English (3.0)", "ENG 1202: Developing English Skills Sessional (1.5)"],
@@ -130,12 +149,16 @@
             }
         };
 
+        // API endpoints for Google Apps Script services
         const notesScriptURL = "https://script.google.com/macros/s/AKfycbysHCrfrM922J5BqXwCPCjE74cCHCzpzObQ6ut7zxcwYHHMS4gb9ALS0b9DXwHvRbB91A/exec";
+        const booksScriptURL = "https://script.google.com/macros/s/AKfycbwp0HGeFvKLyUnMXj_e31-rwkLCZYqvj3rvAICH8X6R5IPCVkxGV7QC1JkKsCoIYEak/exec";
+        
         let historyStack = [];
         let currentPath = { sem: "", group: "", sub: "", cat: "" };
-        let allNotesCache = [];
+        let combinedCache = []; // Shared cache for global search functionality
         const userRole = localStorage.getItem("userRole");
 
+        // Manages custom back navigation via browser history events
         window.onpopstate = function(event) {
             if (historyStack.length > 0) {
                 const lastAction = historyStack.pop();
@@ -145,24 +168,45 @@
             }
         };
 
+        // Fetches and merges data from Notes and Books APIs to build the search cache
         async function preLoadData() {
-            try { const r = await fetch(notesScriptURL); allNotesCache = await r.json(); } catch(e){}
+            try { 
+                const [notesRes, booksRes] = await Promise.all([fetch(notesScriptURL), fetch(booksScriptURL)]);
+                const notes = await notesRes.json();
+                const books = await booksRes.json();
+                
+                const fNotes = notes.map(f => ({ title: f[3], link: f[4], info: f[0] + " > " + f[1], type: "NOTE" }));
+                const fBooks = books.map(b => ({ title: b[0], link: b[2], info: "Author: " + b[1], type: "BOOK" }));
+                
+                combinedCache = [...fNotes, ...fBooks];
+            } catch(e){ console.log("Cache preload failed"); }
         }
 
+        // Handles logic for smart search suggestions
         function smartSearch() {
             const q = document.getElementById('searchBox').value.toLowerCase();
             const box = document.getElementById('searchResultBox');
             if (q.length < 2) { box.style.display = 'none'; return; }
-            const matches = allNotesCache.filter(f => f[3].toLowerCase().includes(q));
+            
+            const matches = combinedCache.filter(f => f.title.toLowerCase().includes(q));
+            
             if (matches.length > 0) {
                 box.style.display = 'block';
-                box.innerHTML = matches.map(f => `<div class="search-item" onclick="window.open('${f[4]}','_blank')"><h4>${f[3]}</h4><p>${f[0]} > ${f[1]}</p></div>`).join('');
+                box.innerHTML = matches.map(f => `
+                    <div class="search-item" onclick="window.open('${f.link}','_blank')">
+                        <div style="display:flex; justify-content:space-between;">
+                            <h4>${f.title}</h4>
+                            <span style="font-size:9px; background:#38bdf8; color:white; padding:1px 5px; border-radius:5px;">${f.type}</span>
+                        </div>
+                        <p>${f.info}</p>
+                    </div>`).join('');
             } else {
-                box.innerHTML = `<div style="padding:15px; font-size:12px;">No results found...</div>`;
+                box.innerHTML = `<div style="padding:15px; font-size:12px;">No matching results found...</div>`;
                 box.style.display = 'block';
             }
         }
 
+        // Core UI engine to render HTML content and update headers
         function render(html, b, showUpload = false) {
             document.getElementById('mainContent').innerHTML = html;
             document.getElementById('breadcrumb').innerText = b;
@@ -178,6 +222,7 @@
             }
         }
 
+        // View 1: Renders the initial semester list
         function showSemesters() {
             historyStack = [];
             const html = Object.keys(syllabus).map(sem => `
@@ -185,6 +230,7 @@
             render(html, "Notes Library", false);
         }
 
+        // View 2: Renders subjects or elective groups within a semester
         function openSemester(sem) {
             window.history.pushState({step: "sem"}, ""); 
             historyStack.push(() => showSemesters());
@@ -196,6 +242,7 @@
             render(html, sem, false);
         }
 
+        // Sub-View: Renders elective subjects within a specific elective group
         function openGroup(sem, group) {
             window.history.pushState({step: "group"}, "");
             historyStack.push(() => openSemester(sem));
@@ -204,6 +251,7 @@
             render(html, group, false);
         }
 
+        // View 3: Renders static categories like Class Notes or Previous Questions
         function openCategories(sub) {
             window.history.pushState({step: "cat"}, "");
             historyStack.push(() => currentPath.group ? openGroup(currentPath.sem, currentPath.group) : openSemester(currentPath.sem));
@@ -213,6 +261,7 @@
             render(html, sub, false);
         }
 
+        // View 4: Fetches and displays final PDF documents from the Cloud database
         async function loadFiles(cat) {
             window.history.pushState({step: "files"}, "");
             currentPath.cat = cat;
@@ -237,6 +286,7 @@
             } catch (e) { document.getElementById('mainContent').innerHTML = "Error loading files."; }
         }
 
+        // Administrator Logic: Permanently delete a file from Drive and Registry
         function deleteFile(id) {
             if (userRole !== "admin") return;
             if (!confirm("Are you sure you want to delete this file?")) return;
@@ -248,6 +298,7 @@
             });
         }
 
+        // Administrator Logic: Handle binary file uploads to the Cloud Storage
         function uploadFile() {
             if (userRole !== "admin") {
                 alert("Unauthorized Access!");
@@ -255,7 +306,7 @@
             }
             const file = document.getElementById('fileInput').files[0];
             const name = document.getElementById('fileDisplayName').value;
-            if (!file || !name) return alert("Fill all fields!");
+            if (!file || !name) return alert("All fields are required!");
             
             const btn = document.getElementById('upBtn');
             btn.innerText = "UPLOADING..."; btn.disabled = true;
@@ -272,13 +323,16 @@
                     category: currentPath.cat 
                 });
                 fetch(notesScriptURL, { method: 'POST', body: params }).then(() => { 
-                    alert("Upload Success!"); 
+                    alert("Upload Successful!"); 
                     location.reload(); 
                 });
             };
         }
 
+        // Navigation Helper: Back function
         function goBack() { window.history.back(); }
+        
+        // Initial application setup on load
         window.onload = () => { 
             window.history.replaceState(null, ""); 
             showSemesters(); 

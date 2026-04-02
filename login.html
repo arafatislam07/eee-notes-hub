@@ -6,6 +6,7 @@
     <title>Login | EEE NOTES HUB</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     
+    <!-- Google Identity Services Library -->
     <script src="https://accounts.google.com/gsi/client?hl=en" async defer></script>
     
     <style>
@@ -40,7 +41,7 @@
             width: 90%;
             display: flex;
             flex-direction: column;
-            align-items: center; /* বাটন সেন্টারে রাখার জন্য */
+            align-items: center; 
         }
 
         .login-card h1 {
@@ -62,7 +63,7 @@
             color: var(--text-dim);
         }
         
-        /* গুগল বাটন কন্টেইনার ফিক্স */
+        /* Centering Google Sign-in button container */
         .g_id_signin {
             width: 100%;
             display: flex;
@@ -76,6 +77,7 @@
         <h1>EEE NOTES HUB</h1>
         <p>Log in with your Google account to access the Resource Hub.</p>
         
+        <!-- Google Login Configuration -->
         <div id="g_id_onload"
              data-client_id="690467727971-rbfqm60vm5p838o1qia17qqnmdda76ef.apps.googleusercontent.com"
              data-callback="handleLogin"
@@ -83,6 +85,7 @@
              data-auto_select="false">
         </div>
 
+        <!-- Standard Google Sign-in Button -->
         <div class="g_id_signin" 
              data-type="standard" 
              data-shape="rectangular" 
@@ -97,29 +100,41 @@
     </div>
 
     <script>
+        /**
+         * Process the response after a successful Google login
+         * @param {Object} response - The response from Google One Tap or Sign-in button
+         */
         function handleLogin(response) {
             const payload = decodeJwtResponse(response.credential);
             const userEmail = payload.email;
 
+            // List of designated Admin emails
             const adminList = [
                 "arafatislam231119@gmail.com", 
                 "friend1@gmail.com",           
                 "friend2@gmail.com"            
             ];
 
+            // Store user identity details in local storage for session management
             localStorage.setItem("userEmail", userEmail);
             localStorage.setItem("userName", payload.name);
             localStorage.setItem("isLoggedIn", "true");
 
+            // Assign role based on the admin list
             if (adminList.includes(userEmail)) {
                 localStorage.setItem("userRole", "admin");
             } else {
                 localStorage.setItem("userRole", "user");
             }
 
+            // Redirect user to the dashboard/home page
             window.location.href = "index.html";
         }
 
+        /**
+         * Decode the JWT token to retrieve user profile data
+         * @param {string} token - The credential token from Google
+         */
         function decodeJwtResponse(token) {
             let base64Url = token.split('.')[1];
             let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
@@ -130,6 +145,9 @@
             return JSON.parse(jsonPayload);
         }
 
+        /**
+         * On window load, check if the user is already authenticated
+         */
         window.onload = function() {
             if (localStorage.getItem("isLoggedIn") === "true") {
                 window.location.href = "index.html";
