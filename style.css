@@ -268,15 +268,14 @@ body {
     .main-wrapper {
         flex-direction: column;
         height: auto;
-        padding-top: 0 !important; /* Removes gap below navbar on mobile */
+        padding-top: 0 !important;
     }
 
-    /* Stack navbar elements vertically and remove fixed overlap */
     .navbar {
         flex-direction: column;
         height: auto;
         padding: 15px;
-        position: relative; /* Change to relative for mobile to stop overlapping */
+        position: relative;
         display: flex;
     }
 
@@ -309,27 +308,32 @@ body {
         border-top: 1px solid #1e293b;
     }
 
-    /* Hero Banner: Starts directly after Navbar with Cream Background */
+    /* Hero Banner: Final Fix for Image above text */
     .left-hero {
         width: 100% !important;
-        height: 500px; /* Banner height */
+        height: 500px;
         border-right: none;
         border-bottom: 2px solid #e0f2fe;
-        background-color: #fefce8 !important; /* Cream background remains consistent */
+        background-color: #fefce8 !important;
         background-image: url('./images/hero-bg.jpg'); 
-        background-size: contain; /* Ensure cartoon is fully visible */
+        background-size: contain; 
         background-repeat: no-repeat;
-        background-position: center bottom; /* Cartoon at bottom */
+        
+        /* ✅ পজিশন মাঝখানে করা হয়েছে যেন কার্টুন উপরে থাকে */
+        background-position: center 40px; 
+        
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        margin-top: 0 !important; /* Forces banner to stick to navy blue section */
+        margin-top: 0 !important;
     }
 
     .hero-overlay {
         background: none;
         align-items: flex-start; 
-        padding-top: 40px; /* Spacing for the text inside banner */
+        
+        /* ✅ কার্টুন থেকে লেখাকে নিচে নামানোর জন্য প্যাডিং বাড়ানো হয়েছে */
+        padding-top: 260px; 
     }
 
     .hero-text {
@@ -347,12 +351,11 @@ body {
     }
 
     .hero-text p {
-        font-size: 1rem;
+        font-size: 0.95rem;
         font-weight: 700;
         color: #000;
     }
 
-    /* Boxes section below the banner */
     .right-nav {
         padding: 40px 20px;
         background-color: #020617; 
