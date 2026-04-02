@@ -257,7 +257,6 @@ body {
         height: auto;
     }
 
-    /* Adjust navbar to stack elements vertically on mobile */
     .navbar {
         flex-direction: column;
         height: auto;
@@ -266,7 +265,6 @@ body {
         display: flex;
     }
 
-    /* Stack logo-search-group vertically */
     .logo-search-group {
         flex-direction: column;
         width: 100%;
@@ -274,14 +272,12 @@ body {
         display: flex;
     }
 
-    /* Order 1: Logo stays at the top */
     .logo {
         order: 1;
         text-align: center;
         width: 100%;
     }
 
-    /* Order 2: Search bar appears in the middle */
     .search-wrapper {
         order: 2;
         width: 100%;
@@ -291,7 +287,6 @@ body {
         width: 100%;
     }
 
-    /* Order 3: Navigation links at the bottom */
     .nav-links {
         order: 3;
         width: 100%;
@@ -305,26 +300,47 @@ body {
         margin: 0 10px;
     }
 
-    /* Adjust Hero Text for mobile to avoid cropping */
+    /* Fixed Image and Text Overlap for Mobile */
+    .left-hero {
+        height: 500px; /* ছবি বড় করা হয়েছে */
+        border-right: none;
+        border-bottom: 2px solid #e0f2fe;
+        background-position: bottom center; /* বইয়ের কার্টুন নিচে থাকবে */
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start; /* লেখা উপরে রাখবে */
+    }
+
+    .hero-overlay {
+        align-items: flex-start; 
+        padding-top: 40px; /* Navbar এর নিচ থেকে লেখা শুরু হবে */
+    }
+
     .hero-text {
         padding-left: 0;
-        transform: translateY(0);
+        transform: translateY(0); /* Laptop ভিউর offset রিসেট */
         text-align: center;
         white-space: normal;
         width: 100%;
     }
 
-    .hero-text h1 { font-size: 2.2rem; }
+    .hero-text h1 { 
+        font-size: 2.2rem; 
+        background: rgba(255, 255, 255, 0.3); /* পড়ার সুবিধার জন্য হালকা ঝাপসা ব্যাকগ্রাউন্ড */
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 8px;
+    }
 
-    .left-hero {
-        height: 350px;
-        border-right: none;
-        border-bottom: 2px solid #e0f2fe;
+    .hero-text p {
+        font-size: 1.1rem;
+        font-weight: 700;
+        margin-top: 10px;
     }
 
     .nav-container {
         height: auto;
-        padding: 20px 0;
+        padding: 30px 20px;
     }
 
     .nav-box { min-height: 150px; }
