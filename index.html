@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EEE NOTES HUB | JUST</title>
-    <!-- Importing Fonts and Font Awesome Icons -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="style.css">
     
-    <!-- Auth Guard: Redirects to login if not logged in -->
     <script>
         if (localStorage.getItem("isLoggedIn") !== "true") {
             window.location.href = "login.html";
@@ -43,7 +41,6 @@
 </head>
 <body>
 
-    <!-- Header Navigation Section -->
     <nav class="navbar">
         <div class="logo-search-group">
             <a href="index.html" class="logo" style="text-decoration: none;">EEE <span>NOTES HUB</span></a>
@@ -53,7 +50,6 @@
                     <input type="text" placeholder="Search notes, books..." id="searchBox" oninput="homeSmartSearch()" onkeyup="checkEnter(event)">
                     <button type="button" onclick="executeSearch()">Search</button>
                 </div>
-                <!-- Dropdown for search suggestions -->
                 <div id="searchResultBox"></div>
             </div>
         </div>
@@ -69,7 +65,6 @@
         </ul>
     </nav>
 
-    <!-- Main Content: Hero and Quick Navigation -->
     <main class="main-wrapper">
         <section class="left-hero">
             <div class="hero-overlay">
@@ -94,35 +89,25 @@
         </section>
     </main>
 
-    <!-- Global Logic Script File -->
     <script src="script.js"></script>
 
     <script>
-        /**
-         * Note: The logic below is maintained for this page. 
-         * It is also being centralized in script.js for other pages.
-         */
-
-        // API URLs for Notes and Books Data Fetching
         const notesURL = "https://script.google.com/macros/s/AKfycbysHCrfrM922J5BqXwCPCjE74cCHCzpzObQ6ut7zxcwYHHMS4gb9ALS0b9DXwHvRbB91A/exec";
         const booksURL = "https://script.google.com/macros/s/AKfycbwp0HGeFvKLyUnMXj_e31-rwkLCZYqvj3rvAICH8X6R5IPCVkxGV7QC1JkKsCoIYEak/exec";
 
         let combinedData = [];
 
-        // Clear session and go to login page
         function logoutUser() {
             localStorage.clear();
             window.location.href = "login.html";
         }
 
-        // Preload all data into cache for instant search
         async function preLoadAllData() {
             try {
                 const [notesRes, booksRes] = await Promise.all([fetch(notesURL), fetch(booksURL)]);
                 const notes = await notesRes.json();
                 const books = await booksRes.json();
 
-                // Format data for search indexing
                 const formattedNotes = notes.map(n => ({ title: n[3], link: n[4], info: n[0] + " > " + n[1], type: "note" }));
                 const formattedBooks = books.map(b => ({ title: b[0], link: b[2], info: "Author: " + b[1], type: "book" }));
 
@@ -132,7 +117,6 @@
             }
         }
 
-        // Live search filtering and UI display
         function homeSmartSearch() {
             const q = document.getElementById('searchBox').value.toLowerCase();
             const box = document.getElementById('searchResultBox');
@@ -156,12 +140,10 @@
             }
         }
 
-        // Utility to handle keyboard search triggers
         function checkEnter(event) {
             if (event.key === "Enter") { executeSearch(); }
         }
 
-        // Navigation logic based on search queries
         function executeSearch() {
             const query = document.getElementById('searchBox').value.trim();
             if (query) {
@@ -174,7 +156,6 @@
             }
         }
 
-        // Run data fetching on load
         window.onload = preLoadAllData;
     </script>
 </body>
