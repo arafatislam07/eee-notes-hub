@@ -268,15 +268,15 @@ body {
     .main-wrapper {
         flex-direction: column;
         height: auto;
-        padding-top: 0; /* Important: Removes gap below navbar on mobile */
+        padding-top: 0 !important; /* Removes gap below navbar on mobile */
     }
 
-    /* Stack navbar elements vertically */
+    /* Stack navbar elements vertically and remove fixed overlap */
     .navbar {
         flex-direction: column;
         height: auto;
         padding: 15px;
-        position: relative;
+        position: relative; /* Change to relative for mobile to stop overlapping */
         display: flex;
     }
 
@@ -311,24 +311,25 @@ body {
 
     /* Hero Banner: Starts directly after Navbar with Cream Background */
     .left-hero {
-        width: 100%;
-        height: 500px; /* Adjust banner height as needed */
+        width: 100% !important;
+        height: 500px; /* Banner height */
         border-right: none;
         border-bottom: 2px solid #e0f2fe;
-        background-color: #fefce8; /* Cream background */
+        background-color: #fefce8 !important; /* Cream background remains consistent */
         background-image: url('./images/hero-bg.jpg'); 
-        background-size: 85%; /* Large Cartoon */
-        background-position: center bottom 10px; /* Cartoon at bottom */
+        background-size: contain; /* Ensure cartoon is fully visible */
+        background-repeat: no-repeat;
+        background-position: center bottom; /* Cartoon at bottom */
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
-        margin-top: 0; /* No space after navy blue section */
+        margin-top: 0 !important; /* Forces banner to stick to navy blue section */
     }
 
     .hero-overlay {
         background: none;
         align-items: flex-start; 
-        padding-top: 40px; /* Adjust text position inside banner */
+        padding-top: 40px; /* Spacing for the text inside banner */
     }
 
     .hero-text {
@@ -340,19 +341,21 @@ body {
     }
 
     .hero-text h1 { 
-        font-size: 2.2rem; 
+        font-size: 2.1rem; 
         line-height: 1.2;
+        color: #000;
     }
 
     .hero-text p {
-        font-size: 1.1rem;
+        font-size: 1rem;
         font-weight: 700;
+        color: #000;
     }
 
     /* Boxes section below the banner */
     .right-nav {
         padding: 40px 20px;
-        background-color: #020617; /* Dark background remains same */
+        background-color: #020617; 
     }
 
     .nav-container {
