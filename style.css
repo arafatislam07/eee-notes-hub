@@ -320,7 +320,7 @@ body {
         background-repeat: no-repeat;
         
         /* Adjusted cartoon position: Moved up from the bottom to prevent overlap */
-        background-position: center bottom 80px !important; 
+        background-position: center bottom 50px !important; 
         
         display: flex;
         flex-direction: column;
