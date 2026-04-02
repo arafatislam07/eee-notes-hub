@@ -317,7 +317,7 @@ body {
     /* Hero Banner Styling for Mobile */
     .left-hero {
         width: 100%;
-        height: 450px; /* Red area: Large banner */
+        height: 600px; /* Red area: Large banner */
         border-right: none;
         border-bottom: 2px solid #e0f2fe;
         background-color: #fefce8;
