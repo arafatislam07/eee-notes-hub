@@ -1,4 +1,4 @@
-/* General Reset */
+/* --- General Reset --- */
 * {
     margin: 0;
     padding: 0;
@@ -12,7 +12,7 @@ body {
     overflow-x: hidden;
 }
 
-/* Navbar: Universal Design for all pages */
+/* --- Navbar: Universal Design for all pages --- */
 .navbar {
     height: 70px;
     background-color: #0f172a;
@@ -26,6 +26,7 @@ body {
     box-shadow: 0 2px 15px rgba(0,0,0,0.3);
 }
 
+/* Logo and Search Grouping */
 .logo-search-group {
     display: flex;
     align-items: center;
@@ -40,9 +41,12 @@ body {
     white-space: nowrap;
 }
 
-.logo span { color: #38bdf8; margin-left: 5px; }
+.logo span { 
+    color: #38bdf8; 
+    margin-left: 5px; 
+}
 
-/* Search Container: Professional Large Size */
+/* --- Search Container: Professional Design --- */
 .search-container {
     display: flex;
     align-items: center;
@@ -87,7 +91,7 @@ body {
     color: #0f172a;
 }
 
-/* Smart Search Result Dropdown Box */
+/* --- Smart Search Result Dropdown Box --- */
 #searchResultBox {
     position: absolute;
     top: 50px;
@@ -112,7 +116,9 @@ body {
     color: #0f172a;
 }
 
-.search-item:hover { background: #f0f9ff; }
+.search-item:hover { 
+    background: #f0f9ff; 
+}
 
 .search-item h4 {
     font-size: 13px;
@@ -121,7 +127,10 @@ body {
     color: #0f172a;
 }
 
-.search-item p { font-size: 11px; color: #64748b; }
+.search-item p { 
+    font-size: 11px; 
+    color: #64748b; 
+}
 
 .search-item span {
     font-size: 10px;
@@ -134,14 +143,16 @@ body {
     font-weight: 700;
 }
 
-/* Navigation Links */
+/* --- Navigation Links --- */
 .nav-links {
     display: flex;
     list-style: none;
     align-items: center;
 }
 
-.nav-links li { margin-left: 20px; }
+.nav-links li { 
+    margin-left: 20px; 
+}
 
 .nav-links a { 
     text-decoration: none; 
@@ -151,16 +162,18 @@ body {
     transition: 0.3s;
 }
 
-.nav-links a:hover { color: #38bdf8 !important; }
+.nav-links a:hover { 
+    color: #38bdf8 !important; 
+}
 
-/* Main Layout Wrapper Styling */
+/* --- Main Layout Wrapper --- */
 .main-wrapper {
     display: flex;
     height: 100vh;
     padding-top: 70px;
 }
 
-/* Left Hero Section Background and Border */
+/* --- Left Hero Section --- */
 .left-hero {
     flex: 2;
     background-image: url('./images/hero-bg.jpg'); 
@@ -202,7 +215,7 @@ body {
     font-weight: 600;
 }
 
-/* Right Side Navigation Cards Section */
+/* --- Right Side Navigation Cards --- */
 .right-nav {
     flex: 1;
     background-color: #020617;
@@ -257,6 +270,7 @@ body {
         height: auto;
     }
 
+    /* Stack navbar elements vertically */
     .navbar {
         flex-direction: column;
         height: auto;
@@ -300,16 +314,16 @@ body {
         margin: 0 10px;
     }
 
-    /* Fixed Image, Text, and Position for Mobile */
+    /* Hero Banner Styling for Mobile */
     .left-hero {
         width: 100%;
-        height: 450px; /* লাল অংশ: ব্যানার বড় করা হয়েছে */
+        height: 450px; /* Red area: Large banner */
         border-right: none;
         border-bottom: 2px solid #e0f2fe;
         background-color: #fefce8;
         background-image: url('./images/hero-bg.jpg'); 
-        background-size: 70%; /* সবুজ অংশ: কার্টুন সাইজ */
-        background-position: center bottom 10px; /* সবুজ অংশ: কার্টুনকে নিচে সেন্টারে আনা হয়েছে */
+        background-size: 70%; /* Green area: Cartoon size */
+        background-position: center bottom 10px; /* Green area: Centered cartoon at bottom */
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
@@ -318,14 +332,14 @@ body {
     .hero-overlay {
         background: none;
         align-items: flex-start; 
-        padding-top: 30px; /* হলুদ অংশ: লেখার জন্য উপরের ফাঁকা জায়গা */
+        padding-top: 30px; /* Yellow area: Top spacing for text */
     }
 
     .hero-text {
         padding: 0 15px;
         transform: translateY(0);
         text-align: center;
-        white-space: normal; /* হলুদ অংশ: লেখা ২ লাইনে আসার জন্য */
+        white-space: normal; /* Yellow area: Multi-line text support */
         width: 100%;
     }
 
@@ -333,7 +347,7 @@ body {
         font-size: 2.1rem; 
         line-height: 1.2;
         margin-bottom: 8px;
-        background: none; /* ক্লিয়ার ভিউর জন্য ব্যাকগ্রাউন্ড রিমুভ */
+        background: none; 
     }
 
     .hero-text p {
@@ -348,11 +362,16 @@ body {
         gap: 20px;
     }
 
-    .nav-box { min-height: 150px; }
+    .nav-box { 
+        min-height: 150px; 
+    }
 }
 
-/* Custom Webkit Scrollbar for Search Box */
-#searchResultBox::-webkit-scrollbar { width: 6px; }
+/* --- Custom Scrollbar for Search Box --- */
+#searchResultBox::-webkit-scrollbar { 
+    width: 6px; 
+}
+
 #searchResultBox::-webkit-scrollbar-thumb {
     background: #38bdf8;
     border-radius: 10px;
