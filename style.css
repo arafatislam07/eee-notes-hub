@@ -322,7 +322,7 @@ body {
         border-bottom: 2px solid #e0f2fe;
         background-color: #fefce8;
         background-image: url('./images/hero-bg.jpg'); 
-        background-size: 70%; /* Green area: Cartoon size */
+        background-size: 85%; /* Green area: Cartoon size */
         background-position: center bottom 10px; /* Green area: Centered cartoon at bottom */
         display: flex;
         flex-direction: column;
