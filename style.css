@@ -308,10 +308,10 @@ body {
         border-top: 1px solid #1e293b;
     }
 
-    /* Hero Banner: Final Fix */
+    /* Hero Banner: Mobile Optimization */
     .left-hero {
         width: 100% !important;
-        height: 550px; /* হাইট একটু বাড়িয়েছি যেন গ্যাপ সুন্দর লাগে */
+        height: 550px; 
         border-right: none;
         border-bottom: 2px solid #e0f2fe;
         background-color: #fefce8 !important;
@@ -319,8 +319,8 @@ body {
         background-size: contain; 
         background-repeat: no-repeat;
         
-        /* ✅ কার্টুন একদম নিচে থাকবে */
-        background-position: center bottom 20px; 
+        /* Adjusted cartoon position: Moved up from the bottom to prevent overlap */
+        background-position: center bottom 80px !important; 
         
         display: flex;
         flex-direction: column;
@@ -332,7 +332,7 @@ body {
         background: none;
         align-items: flex-start; 
         
-        /* ✅ প্যাডিং কমিয়ে ৪০ করেছি যাতে লেখা ওপরে ফাঁকা জায়গায় চলে যায় */
+        /* Padding set to 40px to keep text at the top cream area */
         padding-top: 40px !important; 
     }
 
@@ -378,5 +378,5 @@ body {
 
 #searchResultBox::-webkit-scrollbar-thumb {
     background: #38bdf8;
-    border-radius: 10px;
+    border-radius: 10px;   
 }
